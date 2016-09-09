@@ -25,7 +25,9 @@ flint.hears('/hello', function(bot, trigger) {
 });
 
 // Promise Example with arrow functions in version Flint 4.x
-flint.hears('/add', (bot, trigger) => {
+/*ana - didn't work on centos?
+ flint.hears('/add', (bot, trigger) => {
+{
   var email = trigger.args[1];
 
   bot.add(email)
@@ -36,7 +38,7 @@ flint.hears('/add', (bot, trigger) => {
     .catch(function(err) {
       console.log(err);
     });
-});
+}); */
 
 flint.hears(/(^| )beer( |.|$)/i, function(bot, trigger, id) {
   bot.say('Enjoy a beer, %s! 🍻', trigger.personDisplayName);
