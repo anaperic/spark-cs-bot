@@ -42,6 +42,11 @@ flint.hears(/(^| )beer( |.|$)/i, function(bot, trigger, id) {
   bot.say('Enjoy a beer, %s! 🍻', trigger.personDisplayName);
 });
 
+flint.hears(/(^| )(version WSA|WSA version)( |.|$)/i, function(bot, trigger, id) {
+  bot.say('**Current WSA GD Versions** \n - 8.5.3-069 \n - 9.1.1-074');
+  flint.debug("In WSA version section");
+});
+
 flint.hears(/(^| )Carsten( |.|$)/i, function(bot, trigger, id) {
   bot.say('Ah, he is such a good guy %s, so is neighbor', trigger.personDisplayName);
 });
