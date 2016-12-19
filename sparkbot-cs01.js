@@ -29,8 +29,7 @@ flint.hears('hello', function(bot, trigger) {
   bot.say('Hello %s! My mail is %s', trigger.personDisplayName, bot.email);
 });
 
-// Promise Example with arrow functions in version Flint 4.x
-/*ana - didn't work on centos? */
+
 /* change it to function() and kick out => */
 flint.hears('add', function(bot, trigger)
 {
@@ -62,16 +61,17 @@ flint.hears(/(^| )Carsten( |.|$)/i, function(bot, trigger, id) {
 */
 
 flint.hears('help', function(bot, trigger, id) {
-  bot.say('**Cloud Security Support Bot** \n - I can not do much today, but keep watching me tomorrow. \n - Try typing hello \n - show wsa version all \n - wsa version \n - beer', trigger.personDisplayName);
+  bot.say('**Cloud Security Support Bot** \n - I can not do much today, but keep watching me tomorrow. \n - Try typing hello \n - show wsa version all \n - wsa version \n - show esa version all', trigger.personDisplayName);
 });
 
 //Bot hears that we want some page
 
-flint.hears('show wsa version all', function(bot, trigger, id) {
+flint.hears(/^show wsa version (all|GD|LD|HP)?/i, function(bot, trigger, id) {
   var url ='http://www.cisco.com/c/en/us/support/security/web-security-appliance/products-release-notes-list.html';
   var path = 'http://www.cisco.com';
   var resp = '**WSA Release Notes**';
- 
+  
+  console.log('show wsa version triggered.'); 
   //placeholder - request get
    request(url, function (error, response, body) {
 
@@ -100,6 +100,43 @@ flint.hears('show wsa version all', function(bot, trigger, id) {
    bot.say('WSA Release Notes: %s', url);
    //bot.say(resp);
 });
+
+//Bot hears that we want some page
+
+flint.hears('show esa version all', function(bot, trigger, id) {
+  var url ='http://www.cisco.com/c/en/us/support/security/email-security-appliance/products-release-notes-list.html';
+  var path = 'http://www.cisco.com';
+  var resp = '**ESA Release Notes**';
+
+   request(url, function (error, response, body) {
+
+     if (!error && response.statusCode == 200) {
+         $ = cheerio.load(body);
+        var asyncosName = [];
+        var link = [];
+       $('a').each(function(i, elem) {
+          asyncosName[i] = $(this).text();
+          if(asyncosName[i].match('Release Notes for AsyncOS.*')){
+              resp = resp + '\n - ' + asyncosName[i] + '\n \t - Release Notes: ' + path + $(this)[0].attribs.href + '\n';
+
+              //console.log(asyncosName[i]);
+              //console.log(path + $(this)[0].attribs.href);
+
+          }
+       //return the value from this async call
+         return resp;
+          });
+        } //if
+         bot.say(resp);
+
+    }); // request
+
+   bot.say('ESA Release Notes: %s', url);
+
+});
+
+
+
 
 // default message for unrecognized commands
 
